@@ -37,9 +37,14 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
-        var user = appUserService.registerUser(req.username(), req.password());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        try {
+            appUserService.registerUser(req.username(), req.password());
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+        }
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {

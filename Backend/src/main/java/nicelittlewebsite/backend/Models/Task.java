@@ -1,7 +1,13 @@
 package nicelittlewebsite.backend.Models;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tasks")
@@ -17,9 +23,14 @@ public class Task {
 
     private LocalDate dueDate;
 
-    private String status; // e.g., "PENDING", "DONE"
 
-    private int priority; // optional: 1 = high, 2 = medium, 3 = low
+    private String status = "PENDING"; // e.g., "PENDING", "DONE"
+
+
+    private int priority = 2; // optional: 1 = high, 2 = medium, 3 = low
+
+    @Column(nullable = false)
+    private boolean done = false;
 
     // Constructors
     public Task() {}
@@ -30,6 +41,7 @@ public class Task {
         this.dueDate = dueDate;
         this.status = status;
         this.priority = priority;
+        this.done = false;
     }
 
     // Getters & setters
@@ -50,4 +62,7 @@ public class Task {
 
     public int getPriority() { return priority; }
     public void setPriority(int priority) { this.priority = priority; }
+
+    public boolean isDone() { return done; }
+    public void setDone(boolean done) { this.done = done; }
 }

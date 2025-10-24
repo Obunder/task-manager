@@ -22,7 +22,7 @@ public class AppUserService implements UserDetailsService {
 
     public AppUser registerUser(String username, String rawPassword) {
         if (userRepository.existsByUsername(username)) {
-            throw new RuntimeException("Username already taken");
+            throw new IllegalArgumentException("Username already taken");
         }
         AppUser user = new AppUser();
         user.setUsername(username);

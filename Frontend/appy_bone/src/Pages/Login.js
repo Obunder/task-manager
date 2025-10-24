@@ -1,21 +1,26 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 export default function Login({ setToken }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/login', {
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, {
         username,
         password,
       });
       setToken(response.data.token); // Store token in parent state
-      alert('Login successful, gg to you');
+      setError('');
+      navigate('/dashboard');
     } catch (err) {
-      alert('Login failed, outta my face');
+      setError('Login failed. Check your credentials and try again.');
     }
   };
 
@@ -34,6 +39,7 @@ export default function Login({ setToken }) {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button type="submit">Login</button>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </form>
   );
 }

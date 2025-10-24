@@ -1,10 +1,10 @@
 package nicelittlewebsite.backend.Service;
 
 
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
 
 import nicelittlewebsite.backend.Models.Task;
 import nicelittlewebsite.backend.Repository.TaskRepository;
@@ -27,6 +27,10 @@ public class TaskService {
     }
 
     public Task createTask(Task task) {
+        if (task.getStatus() == null || task.getStatus().isBlank()) {
+            task.setStatus("PENDING");
+        }
+        task.setDone(false);
         return taskRepository.save(task);
     }
 
@@ -37,6 +41,7 @@ public class TaskService {
             task.setDueDate(updatedTask.getDueDate());
             task.setStatus(updatedTask.getStatus());
             task.setPriority(updatedTask.getPriority());
+            task.setDone(updatedTask.isDone());
             return taskRepository.save(task);
         }).orElseThrow(() -> new RuntimeException("Task not found with id " + id));
     }
